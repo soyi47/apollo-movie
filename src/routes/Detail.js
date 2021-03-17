@@ -12,6 +12,10 @@ const GET_MOVIE = gql`
             rating
             description_intro
         }
+        suggestions(id : $id) {
+            id
+            medium_cover_image
+        }
     }
 `
 
@@ -66,18 +70,18 @@ function Detail() {
                     ? "Loading..."
                     : `${data.movie.title}`}
                 </Title>
-                <Subtitle>
-                    {data?.movie?.language} · {data?.movie?.rating}
-                </Subtitle>
-                <Description>{data?.movie?.description_intro}</Description>
+                    <Subtitle>
+                        {data?.movie?.language}{!loading && " · "}{data?.movie?.rating}
+                    </Subtitle>
+                    <Description>{data?.movie?.description_intro}</Description>
             </Column>
-            <Poster bg={data?.movie?.medium_cover_image}></Poster>
+            <Poster bg={ data?.movie?.medium_cover_image }></Poster>
         </Container>
+        
     );
 }
 
 export default Detail;
-
 
 /*
     gql의 첫줄
@@ -95,6 +99,10 @@ export default Detail;
     위와 같은 에러 띄우며 계속 Movie detail 정보를 못 받아옴.
     query에 들어온 value를 int로 받도록 해놨는데, int가 아닌 값이 들어온다는 거...?
     useParams() 확인해보니 ID 값을 String으로 받아와서 String으로 넘겨서 쿼리 실행 안 됨.
-    -> movie 쿼리에서 받는 id를 String 타입으로 변경함
+    -> movie 쿼리에서 받는 id를 String 타입으로 변경했음
+
+    항상 데이터 받을 때 loading check 하여 데이터 제대로 받아온 후 사용할 것.
+    => 삼항 연산자나 && 연산으로 check
+    => optional chaining Javscript
 
 */
